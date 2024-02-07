@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as FaIcons from "react-icons/fa"; //Now i get access to all the icons
 import * as AiIcons from "react-icons/ai";
-import { SidebarData } from "./SidebarData";
+import { SidebarData } from "../SidebarData";
 import Buttons from "./pages/Buttons";
 import  "../styles/Navbar.css"
 
