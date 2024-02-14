@@ -4,10 +4,10 @@ Navigate to Frontend directory from the terminal
 - Step 1: npm install / npm install --force
 - Step 2: npm start 
 
-# In the second step open the terminal and navigate to Backend Folder:
+## In the second step open the terminal and navigate to Backend Folder:
 - Step 3: npm start
 
-# In the third terminal start the flask application:
+## In the third terminal start the flask application:
 - Step 4: cd FrontEnd/src/api
 - Step 5: flask run ( Note you might need to install python libraries if not already installed)
 
