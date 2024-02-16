@@ -1,0 +1,24 @@
+/* .loginStyle {
+    border: 2px solid teal;
+    width: 36em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10em;
+    border-radius: 8px;
+    padding: 10px;
+    background: linear-gradient(to right, #787198 40%, #484558 100%);
+
+} */
+.buttonStyle {
+    width: 10em;
+    padding: 10px;
+    color: white;
+    background: teal;
+}
+
+/* changed by yukta */
+.loginStyle {
+ 
+    background: linear-gradient(to right, #787198 40%, #484558 100%);
+
+}

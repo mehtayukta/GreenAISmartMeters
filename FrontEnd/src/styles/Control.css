@@ -1,0 +1,39 @@
+.control-table {
+    margin-top: 10px;
+    background-color: whitesmoke;
+    border: 0px solid;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 3vh;
+    width: 60vw;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.list-tr:nth-child(even){
+    background-color: rgb(227, 227, 227);
+}
+
+.list-tr:first-child {
+    border-top: 2px solid;
+    border-top-color: rgb(227, 227, 227);
+}
+
+.list-tr:last-child td:first-child {
+    border-bottom-left-radius: 3vh;
+}
+.list-tr:last-child td:last-child{
+    border-bottom-right-radius: 3vh;
+}
+
+.control-setting {
+    color: white;
+}
