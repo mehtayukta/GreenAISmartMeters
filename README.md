@@ -1,17 +1,28 @@
 # Installation step for the project:
-Navigate to Frontend directory from the terminal
 
-- Step 1: npm install / npm install --force
-- Step 2: npm start 
+## Navigate to Frontend directory from the terminal
+The project assumes that nodejs is already installed.
+- Step 1: Open the terminal in the VSCode type the following commands to install the node modules:
+   - npm install / npm install --force
+- Step 2: npm start ( If you get any error of missing modules the modules can be installed by npm install module_name)
+  
+
 
 ## In the second step open the terminal and navigate to Backend Folder:
 - Step 3: npm start
 
 ## In the third terminal start the flask application:
-- Step 4: cd FrontEnd/src/api
+- Step 4 : Setup the flask enviroment by following commands:
+   - Create the api folder in source directory
+   - cd Frontend/scr/api
+   - python -m venv venv
+   - for mac : source venv/bin/activate
+   - pip install Flask ( and other required modules like pandas, numpy, etc.)
+
 - Step 5: flask run ( Note you might need to install python libraries if not already installed)
 
-
+## Setup MongoDB Compass:
+ Install MongoDB Compass and put the connection link of UI
 
 # GreenAISmartMeters
 Smart Meters for Green AI
