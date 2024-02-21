@@ -15,11 +15,17 @@ The project assumes that nodejs is already installed.
 - Step 4 : Setup the flask enviroment by following commands:
    - Create the api folder in source directory
    - cd Frontend/scr/api
-   - python -m venv venv
-   - for mac : source venv/bin/activate
+   - python -m venv venv (creating the virtual environment)
+   - for mac : .venv/bin/activate
    - pip install Flask ( and other required modules like pandas, numpy, etc.)
+   - pip install python-dotenv
 
-- Step 5: flask run ( Note you might need to install python libraries if not already installed)
+- Step 5: Create in the API folder create a file .flaskenv and write
+      FLASK_APP=api.py
+      FLASK_DEBUG=1
+
+- Step 7: flask run ( Note you might need to install python libraries if not already installed)
+
 
 ## Setup MongoDB Compass:
  Install MongoDB Compass and put the connection link of UI
