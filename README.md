@@ -22,6 +22,7 @@ The project assumes that nodejs is already installed.
 
 - Step 5: Create in the API folder create a file .flaskenv and write
       FLASK_APP=api.py
+  
       FLASK_DEBUG=1
 
 - Step 7: flask run ( Note you might need to install python libraries if not already installed)
