@@ -21,6 +21,7 @@ The project assumes that nodejs is already installed.
    - pip install python-dotenv
 
 - Step 5: Create in the API folder create a file .flaskenv and write
+  
       FLASK_APP=api.py
   
       FLASK_DEBUG=1
