@@ -29,13 +29,15 @@
   background-color: #28282e;
   width: 250px;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  position: fixed;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* position: fixed; */
   top: 0;
   left: -100%;
-  transition: 850ms;
+  /* transition: 850ms; */
+  padding-left: 20px;
 }
+
 
 .nav-menu.active {
   left: 0;
@@ -116,3 +118,34 @@ h2 {
 
 }
 
+
+.greenAI_header
+{
+     padding: 0px; 
+     margin-left: 0px;
+    margin-top: none;
+     margin-bottom: 10px;
+    width: -moz-fit-content;
+    /* width: fit-content; */
+    /* border-radius: 1vh; */
+    /* opacity: 0.9; */
+    background-size: 210;
+    /* background-color: #323232; */
+     border: none;
+    /* color: white; */
+    /* background: none; */
+    font-size: 13px;
+    color:'#9FA2B4';
+    padding-top:0px;
+    background-color:"#28282d" !important ;
+    font-size :20px;
+
+}
+
+.elememt_class
+{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  padding-left: 2px;
+}
