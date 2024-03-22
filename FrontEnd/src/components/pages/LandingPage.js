@@ -1,31 +1,47 @@
+
 import React from 'react'
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom'
+
 
 import '../../App.css'
 import '../../styles/LandingPage.css'
-import BackgroundImage from '../../assets/images/landing-page.jpg'
+import BackgroundImage from '../../assets/images/bg.png'
 
 
 export const LandingPage = () => {
     const navigate = useNavigate();
 
     const handleLoginpage = (event) => {
-        navigate("/login");
+        navigate("/home");
       };
-
-    return (
-        <header classname="HeaderStyle">
-            <div id='background'></div> {/*N change*/}
-            <div id='title'>
-                <h1> Green Energy Cloud </h1>
-            </div>
+      return (
+        <div style={{textAlign:'center'}}>
+        <header style={ HeaderStyle }>
+            <h1 className="main-title text-center">login / register page</h1>
+            <p className="main-para text-center">join us now and don't waste time</p>
             <div className="buttons text-center">
-                <img src={BackgroundImage} alt="bg" width="90%" />
-                    <button className="primary-button buttonStyle" onClick={handleLoginpage}>log in</button>
-                {/* <Link to="/register">
+                <Link to="/home">
+                    <button className="primary-button">log in</button>
+                </Link>
+                <Link to="/register">
                     <button className="primary-button" id="reg_btn"><span>register </span></button>
-                </Link> */}
+                </Link>
             </div>
         </header>
+        </div>
     )
+
+    
 }
+
+const HeaderStyle = {
+    width: "100%",
+    height: "100vh",
+    background: `url(${BackgroundImage})`,
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
+}
+
+ 
