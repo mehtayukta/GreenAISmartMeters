@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef} from 'react';
 import Axios from "axios";
 import Table from 'react-bootstrap/Table';
 import '../../../styles/deviceMgmt.css';
+import { data } from '../MonitorTrackingWater';
+
 
 const buttonStyle = {
   color: "white",
@@ -46,9 +48,18 @@ export const ElectricDeviceManagement = () => {
   const [cloudStatus, setcloudStatus] = useState("");
   const [workingStatus, setworkingStatus] = useState("");
   const [activeStatus, setactiveStatus] = useState("");
+  const [hideTable, setHideTable] = useState(true);
+  const [hideDeviceInfo, sethideDeviceInfo] = useState(true);
+  const [selectedId, setSelectedId] = useState(null);
+
+
+
   //const [userId, setuserId] = useState(localStorage.getItem("id"));
  // const [userId, setuserId] = useState("");
   const buttonRef = useRef(null);
+  const [viewing, setViewing] = useState(false); // State to manage "Viewing" state
+  //const [buttonStyle, setButtonStyle] = useState(buttonStyleDefault); // Default button style
+
 
   useEffect(() => {
     console.log("Fetching meter details...");
@@ -66,8 +77,13 @@ export const ElectricDeviceManagement = () => {
       });
   }, []); // Empty dependency array ensures that this useEffect runs once when the component mounts
   const view = (data) => {
+
+    setSelectedId(data._id);
     console.log(data);
+    document.getElementById("form1").classList.add("no-border");
     setHideform(false);
+    sethideDeviceInfo(false);
+    setHideTable(false);
     setisDisabled(true);
     setshowSubmit(false);
     console.log(data);
@@ -90,6 +106,8 @@ export const ElectricDeviceManagement = () => {
     setactiveStatus(Meter.activeStatus);
     //setuserId(Meter.userId);
 
+
+    setViewing(true);
 
   }
   
@@ -117,13 +135,16 @@ export const ElectricDeviceManagement = () => {
 }
 const formButton = {
   color: "white",
-  background: "teal",
-  padding: "8px",
-  width: "10em",
-  textTransform: "uppercase",
-  marginTop: "3em",
+  // textTransform: "uppercase",
   position: "relative",
-  left: "24em"
+  left: "20em",
+  width: "140px",
+  height: "35px",
+  top:'10px',
+  /* background: rgba(60,60,168,0.5); */
+  background: "rgb(60 60 168 / 74%)",
+  opacity: "1",
+  borderRadius:"10px"
 }
 
 const onsubmitaction = (event) => {
@@ -198,6 +219,7 @@ const Updatedataindatabase = (id) => {
   console.log("In ElectricDevice management.js")
 
     if (res.data) {
+      console.log(res.data)
       setelectricMeterId(res.data.electricMeterId);
       setelectricMeterName(res.data.electricMeterName);
       setPower(res.data.power);
@@ -224,24 +246,40 @@ const Updatedataindatabase = (id) => {
   });
 }
 
-const update = (id, data) => {
-  console.log(id);
-  view(data);
+// const update = (id, data) => {
+//   console.log("This is update",data);
+
+const update = () => {
+  console.log(electricMeterId)
+  //view(data); 
   setisDisabled(false);
   setHideform(false);
-  setshowSubmit(true);
-  updatedata(id);
+  //setshowSubmit(true);
+  //updatedata(id);
+  //updatedata(data, data._id);
+
 }
 
 const updatedata = (id) => {
   console.log(id);
 }
+// const updatedata = (data, id) => {
+//   console.log(id);
+//   // Now you can use 'data' and 'id' in your update logic
+// }
 
-const removedata = (id) => {
+const removedata = () => {
+
   console.log("In removedata  ElectricDevice management.js")
 
-  console.log(id);
+  console.log("This meter id remove", electricMeterId);
+  //const id =electricMeterId;
+  console.log("This meter id remove", selectedId);
+  const id =selectedId
+  debugger; 
   setHideform(true);
+  setHideTable(true);
+  sethideDeviceInfo(true);
 
   //Axios.delete("http://localhost:4001/api/meter/deleteMeter?id=" + id).
   Axios.delete(`http://localhost:4001/api/meter/deleteMeter/${id}`).
@@ -260,70 +298,110 @@ const removedata = (id) => {
 
 }
 
-  return (
-    <>
-    <div className="text-left">
-      <h5>Device List</h5>
-      <Table className='list-table'>
-        <thead>
-          <tr>
-            <th className='light-grey'>Device ID</th>
-            <th className='light-grey'>Device Name</th>
-            <th className='light-grey'>View</th>
-            <th className='light-grey'>Update</th>
-            <th className='light-grey'>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {meterdetails.map((data, index) => (
-                <tr className='list-tr'>
-                <td>{data.electricMeterId}</td>
-                <td style={textStyle}>{data.electricMeterName}</td>
-                <td><button style={buttonStyle} onClick={() => view(data)}>View</button></td>
-                <td><button style={buttonStyle} onClick={() => update(data._id, data)}>Update</button></td>
-                <td><button style={buttonStyle} onClick={() => removedata(data._id)}>Delete</button></td>
-                </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
-    <button className='curved-corners' style={{ width: 'fit-content', color: "white", background: "teal", padding: "10px", marginLeft: "1.5em" }} onClick={addmeter}>Add a Device + </button>
-     <form className='add-device' style={hideform ? noneStyle : blockstyle} onSubmit={onsubmitaction}>
-       <input type="hidden" name="device_id" value={_id} />
-       <div><label>Device Name:</label></div>
-       <div><input type="text" name="dname" style={textStyle} value={electricMeterName} onChange={(e) => (setelectricMeterName(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Device ID:</label></div>
-       <div><input type="text" name="did" style={textStyle} value={electricMeterId} onChange={(e) => (setelectricMeterId(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Manufacturer:</label></div>
-       <div><input type="text" name="dman" style={textStyle} value={manufacturer} onChange={(e) => (setmanufacturer(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Location:</label></div>
-       <div><input type="text" name="dloc" style={textStyle} value={location} onChange={(e) => (setlocation(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Model:</label></div>
-       <div><input type="text" name="dmodel" style={textStyle} value={model} onChange={(e) => (setmodel(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Amperage Capacity:</label></div>
-       <div><input type="text" name="dacap" style={textStyle} value={electricCapacity} onChange={(e) => (setelectricCapacity(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Installation Method:</label></div>
-       <div><input type="text" name="dins" style={textStyle} value={installationMethod} onChange={(e) => (setinstallationMethod(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Measurement Accuracy:</label></div>
-       <div><input type="text" name="dmeaacc" style={textStyle} value={meausurementAccuracy} onChange={(e) => (setmeausurementAccuracy(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Installation Date:</label></div>
-       <div><input type="text" name="dins" style={textStyle} value={installationDate} onChange={(e) => (setinstallationDate(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Dimensions:</label></div>
-       <div><input type="text" name="ddime" style={textStyle} value={dimensions} onChange={(e) => (setdimensions(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Deployment Date:</label></div>
-       <div><input type="text" name="ddep" style={textStyle} value={deploymentDate} onChange={(e) => (setdeploymentDate(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Power:</label></div>
-       <div><input type="text" name="dpower" style={textStyle} value={power} onChange={(e) => (setPower(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Cloud Status:</label></div>
-       <div><input type="text" name="ddep" style={textStyle} value={cloudStatus} onChange={(e) => (setcloudStatus(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Working Status:</label></div>
-       <div><input type="text" name="ddep" style={textStyle} value={workingStatus} onChange={(e) => (setworkingStatus(e.target.value))} disabled={isdisabled} /></div>
-       <div><label>Active Status:</label></div>
-       <div><input type="text" name="dpower" style={textStyle} value={activeStatus} onChange={(e) => (setactiveStatus(e.target.value))} disabled={isdisabled} /></div>
-       <button className='curved-corners' style={showsubmit ? formButton : noneStyle} type='submit'>Submit</button>
 
+  return (
+  
+    <>
+    
+    
+        <div>
+    <button className='buttonStyle_device' style={{marginLeft: '22%', marginTop: '2%',marginBottom:'0%'}} onClick={addmeter}>Add Device + </button>
+</div>
+
+    <div className="text-left">
+      <br>
+
+      </br>
+      
+      <div className="table-container" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+  <Table className='device_list table-container'>
+  <thead>
+    <tr>
+      <th className='light-grey'>Device ID</th>
+      <th className='light-grey'>Device Name</th>
+      <th className='light-grey'>View</th>
+      {/* <th className='light-grey'>Update</th> */}
+      {/* <th className='light-grey'>Delete</th> */}
+    </tr>
+  </thead>
+  <tbody>
+    {meterdetails.map((data, index) => (
+      <tr className={index % 2 === 0 ? 'even-row' : 'odd-row'} key={index}>
+        <td>{data.electricMeterId}</td>
+        <td style={textStyle}>{data.electricMeterName}</td>
+        <td><button 
+        className={`buttonStyle_device ${viewing ? 'viewing' : ''}`}
+                onClick={() => view(data)}>
+                View</button>
+        </td>
+        {/* <td><button className='buttonStyle_device' onClick={() => update(data._id, data)}>Update</button></td> */}
+        {/* <td><button style={buttonStyle} onClick={() => update(data._id, data)}>Update</button></td> */}
+        {/* { <td><button className='buttonStyle_device' onClick={() => removedata(data._id)}>Delete</button></td> } */}
+      </tr>
+    ))}
+  </tbody>
+</Table>
+  </div>
+    </div>
+    {/* <button className='curved-corners' style={{ width: 'fit-content', color: "white", background: "teal", padding: "10px", marginLeft: "1.5em" }} onClick={addmeter}>Add a Device + </button> */}
+    <h4 className='deviceInformation' style={{ display: hideDeviceInfo ? 'none' : 'block' }} >Device Information</h4>
+
+
+     <form className='add-device_device' id ="form1" style={hideform ? noneStyle : blockstyle} onSubmit={onsubmitaction}>
+       <input type="hidden" name="device_id" value={_id} />
+       <div><label className='form_elements'>Device Name:</label></div>
+       <div><input  className = "input_type" type="text" name="dname" style={textStyle} value={electricMeterName} onChange={(e) => (setelectricMeterName(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Device ID:</label></div>
+       <div><input  className = "input_type" type="text" name="did" style={textStyle} value={electricMeterId} onChange={(e) => (setelectricMeterId(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Manufacturer:</label></div>
+       <div><input className = "input_type" type="text" name="dman" style={textStyle} value={manufacturer} onChange={(e) => (setmanufacturer(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Location:</label></div>
+       <div><input className = "input_type" type="text" name="dloc" style={textStyle} value={location} onChange={(e) => (setlocation(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Model:</label></div>
+       <div><input className = "input_type" type="text" name="dmodel" style={textStyle} value={model} onChange={(e) => (setmodel(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Amperage Capacity:</label></div>
+       <div><input className = "input_type" type="text" name="dacap" style={textStyle} value={electricCapacity} onChange={(e) => (setelectricCapacity(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Installation Method:</label></div>
+       <div><input className = "input_type" ype="text" name="dins" style={textStyle} value={installationMethod} onChange={(e) => (setinstallationMethod(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Measurement:</label></div>
+       <div><input className = "input_type" type="text" name="dmeaacc" style={textStyle} value={meausurementAccuracy} onChange={(e) => (setmeausurementAccuracy(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Installation Date:</label></div>
+       <div><input className = "input_type" type="text" name="dins" style={textStyle} value={installationDate} onChange={(e) => (setinstallationDate(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Dimensions:</label></div>
+       <div><input className = "input_type" type="text" name="ddime" style={textStyle} value={dimensions} onChange={(e) => (setdimensions(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Deployment Date:</label></div>
+       <div><input className = "input_type" ype="text" name="ddep" style={textStyle} value={deploymentDate} onChange={(e) => (setdeploymentDate(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Power:</label></div>
+       <div><input className = "input_type" type="text" name="dpower" style={textStyle} value={power} onChange={(e) => (setPower(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Cloud Status:</label></div>
+       <div><input className = "input_type" type="text" name="ddep" style={textStyle} value={cloudStatus} onChange={(e) => (setcloudStatus(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Working Status:</label></div>
+       <div><input className = "input_type" type="text" name="ddep" style={textStyle} value={workingStatus} onChange={(e) => (setworkingStatus(e.target.value))} disabled={isdisabled} /></div>
+       <div><label className='form_elements'>Active Status:</label></div>
+       <div><input className = "input_type"  type="text" name="dpower" style={textStyle} value={activeStatus} onChange={(e) => (setactiveStatus(e.target.value))} disabled={isdisabled} /></div>
+       {/* <div><button className='buttonStyle_device' style={{float:'left'}} type='submit'>Submit</button></div> */}
+       <button className='buttonStyle_device' style={showsubmit ? formButton : noneStyle} type='submit'>Submit</button>
      </form>
+     { <div style={{ display: hideTable ? 'none' : 'block' }}>
+
+      <Table className='update_delete'>
+  <thead>
+    <tr>
+
+    <th> <button className={`buttonStyle_device_update_delete edit_button ${viewing ? 'disabled' : ''}`} onClick={() => { update();}}>Edit </button></th>
+    <th><button className={'buttonStyle_device_update_delete update_button'}  onClick={() => { onsubmitaction();}} type='submit'>Update</button></th>
+
+    {/* <th><button className='buttonStyle_device' style={showsubmit ? formButton : noneStyle} type='submit'>Update</button></th> */}
+    <th><button className={'buttonStyle_device_update_delete delete_button'} onClick={() => removedata()} >Delete </button> </th> 
+
+    </tr>
+  </thead>
+  </Table>
+
+        </div>}
+     <br></br>
+     
       </>
 
-  )
+  ) 
 };
