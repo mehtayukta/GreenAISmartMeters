@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Switch, BrowserRouter } from 'react-router-dom'
 import { LandingPage } from './components/pages/LandingPage'
 import { LoginPage } from './components/pages/LoginPage'
 import { RegisterPage } from './components/pages/RegisterPage'
@@ -22,11 +22,15 @@ import UserTable from './components/Admin/UserTable';
 import { MonitorTrackingOptions} from './components/pages/MonitorTrackingOptions'
 
 import TestComponent from './components/pages/test.js'
+import { GlobalProvider } from './components/pages/GlobalContext';
+
+
 
 function App() {
   
     return (
         <>
+         <GlobalProvider>
             <div>
                 {/* {currentPath.length>0  && <Navbar />} */}
             <Routes>
@@ -46,8 +50,8 @@ function App() {
                     <Route path="/addclients" element={<><SideBar/><UserTable/> </>}/>
                     <Route path="/adminmetrics" element={<><SideBar/><Adminmetrics/></>}/>                    
                     <Route path="/adminhome" element={<><SideBar/><AdminHome/></>}/>
-                    <Route path="/graph" element={<><TestComponent/></>}/>
-
+                    {/* <Route path="/PageProvider" element={<></>}/> */}
+                
 
                 </Routes>
                 {/* <Routes> */}
@@ -61,7 +65,8 @@ function App() {
                     <AppRoute path="/monitor-tracking" layout={Navbar} component={<MonitorTracking />} /> */}
                     {/* </Routes> */}
             </div>
-
+           
+    </GlobalProvider>
         </>
     )
 }
