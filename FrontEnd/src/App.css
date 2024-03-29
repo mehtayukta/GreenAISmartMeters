@@ -96,7 +96,8 @@ body {
 }
 
 .main-title {
-  padding-top: 10rem;
+  margin-top: 0%;
+  /* padding-top: 10rem; */
   font-size: 5rem;
   font-family: 'Fascinate', cursive;
   text-transform: uppercase
