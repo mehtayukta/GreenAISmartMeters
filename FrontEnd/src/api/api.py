@@ -8,3 +8,5 @@ import fectingdata
 import prediction
 
 import comparegraphs
+
+import last30daysdata
