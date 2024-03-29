@@ -166,4 +166,17 @@ router.get('/getMeterDetails', async (req, res) => {
 });
 
 
+router.get('/getLast30DaysMeterData', async (req, res) => {
+  try {
+    // Call the static method getLast30DaysMeterData from MeterServices
+    const last30DaysData = await MeterServices.getLast30DaysMeterData();
+    // Send the fetched data as JSON response
+    res.json(last30DaysData);
+  } catch (error) {
+    // Handle errors
+    console.error('Error fetching last 30 days meter data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;
