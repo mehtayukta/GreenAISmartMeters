@@ -82,6 +82,28 @@ class SimulatedMeterServices {
     }
 
 
+    static getLast30DaysMeterData = async(id) => {
+        console.log(id)
+                try {
+                    let foundMeter = await simulated_meter.find({"_id": id });
+                    if(foundMeter != [])
+                    {
+                        console.log(foundMeter);
+                        return foundMeter;
+                    }
+                    else{
+                        console.log('no meter found');
+                    }
+                    
+                }
+                catch(err){
+                        console.log(err);
+                        console.log("Some unexpected error occured while logging in")
+                }
+    }
+
+    
+
 }
 
 

@@ -156,6 +156,28 @@ class MeterServices {
             throw err; // You can handle the error or throw it to be handled by an error handler.
         }
     }
+
+
+
+    //// For homepage
+    static getLast30DaysMeterData = async () => {
+        try {
+            // Find all electric meters with working status = 1
+            const workingMeters = await electricMeter.find({ workingStatus: 1 });
+
+            // Iterate over each meter and fetch data for the last 30 days
+            const last30DaysData = await Promise.all(workingMeters.map(async (meter) => {
+                // Fetch simulated meter data for the last 30 days
+                const last30DaysDataForMeter = await SimulatedMeter.find({ meter_id: meter._id, timestamp: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } });
+                return { meterId: meter._id, data: last30DaysDataForMeter };
+            }));
+            console.log(last30DaysData)
+            return last30DaysData;
+        } catch (error) {
+            console.error('Error fetching last 30 days meter data:', error);
+            throw error;
+        }
+    }
 }
 
 module.exports.MeterServices = MeterServices;
