@@ -2,6 +2,10 @@
   --navBg: #060b26;
 }
 
+.selectedItemStyle {
+  background-color: #eeeeee;
+  border-radius: 5px; 
+}
 .navbar {
   background: #28282e;
   color: floralwhite;
@@ -148,4 +152,16 @@ h2 {
   margin-bottom: 20px;
   font-size: 15px;
   padding-left: 2px;
+}
+
+.container {
+  display: flex !important;
+}
+
+.nav-menu {
+  width: 20%; /* Adjust as needed */
+}
+
+.content {
+  flex: 1 !important;
 }
