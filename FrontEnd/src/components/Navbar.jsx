@@ -10,11 +10,9 @@ import * as FaIcons from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from './pages/GlobalContext';
-//import { FaSun,FaBell,FaCloud,FaCamera,FaBatteryFull,FaHouseUser,FaDashcube,FaParagraph,FaCalendar,FaFacebookMessenger,FaEnvelope,FAGear, FaSquare, FaAngular,FaCanadianMapleLeaf } from 'react-icons/fa';
 import SideMenuBar from './SideMenuBar'
 
 
-//import { useDispatch } from 'react-redux';
 
 
 //import '../App.css';
@@ -38,29 +36,7 @@ export const Navbar = () => {
 
   return (
     <>
-    {/* <IconContext.Provider value={{ color: '#FFF' }}>
-          <nav className={`nav-menu ${sidebar ? 'active' : ''}`}>
-
-       
-          <div style={{color: 'white'}}>
-            <ul className="nav-menu-items">
-               <li className="navbar-toggle">
-                <Link to="#" className="menu-bars" onClick={showSidebar}>
-                  <AiIcons.AiOutlineClose />
-                </Link>
-              </li>   
-              {SidebarData.map((item, index) => (
-            <div className= "elememt_class" key={index} onClick={() => item.handleClick(setGlobalVariable)}>
-              <Link to={item.path}>{item.icon}</Link>
-              <span>{item.title}</span>
-            </div>
-           ))}
-            </ul>
-         </div>
-          </nav>
-          
-        </IconContext.Provider>   */}
-     <div style={{ height: '10%', color: '#757575', backgroundColor: '#363740', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 30, paddingRight: 30, width: '100%' }}>
+     <div style={{ height: '5%', color: '#757575', backgroundColor: '#363740', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: 30, paddingRight: 30, width: '100%' }}>
      
       {/* ... (your top navigation bar code) */}
       <div style={{ width: '70%', flexDirection: 'row', display: 'flex' }}>
@@ -73,8 +49,10 @@ export const Navbar = () => {
                 setStorageColor(0);
                 setMeterColor(0);
               }}
-              style={{ width: '100%',  color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}>
-              <Link  style = {{ color: '#757575'}}to="/solar">Solar</Link>
+              style={{ width: '100%',  color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}
+              className={`navbar-link ${solarColor ? "selectedItemStyle" : ""}`}
+              >
+              <Link  to="/solar" style = {{ color: '#757575'}}to="/solar">Solar</Link>
             </div>
             <div
               onClick={() => {
@@ -86,7 +64,9 @@ export const Navbar = () => {
                 setGlobalVariable_2('meter')
                 navigate(globalVariable);
               }}
-              style={{ width: '100%',  color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}>
+              style={{ width: '100%',  color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}
+              className={`navbar-link ${meterColor ? "selectedItemStyle" : ""}`}
+              >
               <Link  style = {{ color: '#757575'}} to={globalVariable}>Meter</Link>
             </div>
 
@@ -98,10 +78,14 @@ export const Navbar = () => {
                 setStorageColor(0);
                 setMeterColor(0);
                 setGlobalVariable_2('iot')
+
                 navigate(setGlobalVariable, { state: { selectedPage: 'iot' } });
 
               }}
-              style={{ width: '100%', color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}>
+              style={{ width: '100%', color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}
+
+
+              >
               <Link style = {{ color: '#757575'}} to={setGlobalVariable}>IoT</Link>
 
             </div>
@@ -117,45 +101,86 @@ export const Navbar = () => {
       
     </div> 
    
-    {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '20px' }}>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-     */}
+   
      <div>
       <div>
-         {/* <IconContext.Provider value={{ color: '#FFF' }}>
-      <nav className={`nav-menu ${sidebar ? 'active' : ''}`}>
-      <div style={{height:'10%',flexDirection:'row',display:'flex',justifyContent:'center',paddingTop:'10%'}}>
-              <FaCanadianMapleLeaf color={"green"} size={40} style={{paddingTop:'5%'}} />
-            <h5 className='greenAI_header'>Green Energy Cloud</h5>
-          </div>
-      </nav>
-    </IconContext.Provider> */}
     </div>
     </div>
 
-
-    <IconContext.Provider value={{ color: '#FFF' }}>
-          <nav className={`nav-menu ${sidebar ? 'active' : ''}`}>
-
-       
-          <div style={{color: 'white'}}>
-            <ul className="nav-menu-items">
-               <li className="navbar-toggle">
-                <Link to="#" className="menu-bars" onClick={showSidebar}>
-                  <AiIcons.AiOutlineClose />
-                </Link>
-              </li>   
-              {SidebarData.map((item, index) => (
-            <div className= "elememt_class" key={index} onClick={() => item.handleClick(setGlobalVariable)}>
-              <Link to={item.path}>{item.icon}</Link>
-              <span>{item.title}</span>
-            </div>
-           ))}
-            </ul>
-         </div>
-          </nav>
-          
-        </IconContext.Provider> 
               </>  
   )
 }
+
+// import React, { useState, useContext } from 'react';
+// import { Link } from 'react-router-dom';
+// import { FaBell } from 'react-icons/fa';
+// import Avatar from 'react-avatar';
+// import { useNavigate } from 'react-router-dom';
+// import { GlobalContext } from './pages/GlobalContext';
+// import "../styles/Navbar.css";
+
+// export const Navbar = () => {
+//   const [meterColor, setMeterColor] = useState(false);
+//   const [solarColor, setSolarColor] = useState(false);
+//   const [storageColor, setStorageColor] = useState(false);
+//   const [cameraColor, setCameraColor] = useState(false);
+//   const [iotColor, setIotColor] = useState(false);
+//   const navigate = useNavigate();
+//   const { globalVariable, setGlobalVariable, globalVariable_2, setGlobalVariable_2 } = useContext(GlobalContext);
+
+//   return (
+//     <>
+//       <div className="navbar-container">
+//         <div className="navbar-links">
+//           <div
+//             onClick={() => {
+//               setSolarColor(true);
+//               setCameraColor(false);
+//               setIotColor(false);
+//               setStorageColor(false);
+//               setMeterColor(false);
+//             }}
+//             className={`navbar-link ${solarColor ? "selectedItemStyle" : ""}`}
+//           >
+//             <Link to="/solar">Solar</Link>
+//           </div>
+//           <div
+//             onClick={() => {
+//               setSolarColor(false);
+//               setCameraColor(false);
+//               setIotColor(false);
+//               setStorageColor(false);
+//               setMeterColor(true);
+//               setGlobalVariable_2('meter')
+//               navigate(globalVariable);
+//             }}
+//             className={`navbar-link ${meterColor ? "selectedItemStyle" : ""}`}
+//           >
+//             <Link to={globalVariable}>Meter</Link>
+//           </div>
+//           <div
+//             onClick={() => {
+//               setSolarColor(false);
+//               setCameraColor(false);
+//               setIotColor(true);
+//               setStorageColor(false);
+//               setMeterColor(false);
+//               setGlobalVariable_2('iot')
+//               navigate(setGlobalVariable, { state: { selectedPage: 'iot' } });
+//             }}
+//             className={`navbar-link ${iotColor ? "selectedItemStyle" : ""}`}
+//           >
+//             <Link to={setGlobalVariable}>IoT</Link>
+//           </div>
+//         </div>
+//         <div className="navbar-search">
+//           <input className="search-input" placeholder="Search" type="text" />
+//           <FaBell className="bell-icon" size={15} color={'gray'} />
+//           <p className="user-name">Kevin</p>
+//           <Avatar round={true} size={25} name="Foo Bar" />
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+
