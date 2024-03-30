@@ -14,8 +14,8 @@ dataset = "../Dataset/meter/"
 figures_output = "../../public/output_graphs/"
 table_output = "../../public/output_graphs/"
 
-@app.route('/api/comparegraphs', methods=['POST'])
-def comparegraphs():
+@app.route('/api/comparegraphssolar', methods=['POST'])
+def comparegraphssolar():
     data = request.json
     start_date = datetime.strptime(data.get('startDate'), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
     end_date = datetime.strptime(data.get('endDate'), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
@@ -26,7 +26,7 @@ def comparegraphs():
     # Connect to MongoDB
     client = pymongo.MongoClient("mongodb+srv://guest_admin:greencloud@cluster0.0lsxams.mongodb.net/GreenCloud")  # Change the connection string as per your MongoDB setup
     db = client["GreenCloud"]
-    collection = db["simulated_metersv2"]
+    collection = db["simulated_solar"]
     LoadMeter = collection.find()
 
     mongodbdata = []

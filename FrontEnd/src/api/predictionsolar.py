@@ -14,8 +14,8 @@ figures_output = "../../public/output_graphs/"
 table_output = "../../public/output_graphs/"
 
 
-@app.route('/api/prediction', methods=['POST'])
-def prediction():
+@app.route('/api/predictionsolar', methods=['POST'])
+def predictionsolar():
     data = request.json
     start_date = datetime.strptime(data.get('startDate'), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
     end_date = datetime.strptime(data.get('endDate'), "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d")
@@ -26,7 +26,7 @@ def prediction():
     # Connect to MongoDB
     client = pymongo.MongoClient("mongodb+srv://guest_admin:greencloud@cluster0.0lsxams.mongodb.net/GreenCloud")  # Change the connection string as per your MongoDB setup
     db = client["GreenCloud"]
-    collection = db["simulated_metersv2"]
+    collection = db["simulated_solar"]
     LoadMeter = collection.find()
 
     mongodbdata = []
@@ -41,7 +41,7 @@ def prediction():
             'month': document['month'],
             'day': document['day'],
             'hour_minute': document['hour_minute'],
-            'predictedload': document['predictedload']
+            'PredictedGeneration': document['PredictedGeneration']
             # Add other fields as needed
             # 'RelativeHumidity': document['RelativeHumidity'],
             # 'DewPoint': document['DewPoint'],
@@ -66,8 +66,8 @@ def prediction():
     df_combined['time'] = df_combined['tstp']
     filtered_df = df_combined[df_combined['LCLid'].isin(device_list)]
     filtered_df = filtered_df[(filtered_df['time'] >= start_date) & (filtered_df['time'] <= end_date)]
-    result_df = filtered_df.groupby(["LCLid", 'time']).agg({'energy(kWh/hh)': 'sum', 'predictedload': 'sum'}).reset_index()
-    numeric_columns = result_df[["LCLid",column, "predictedload", "time"]]
+    result_df = filtered_df.groupby(["LCLid", 'time']).agg({'energy(kWh/hh)': 'sum', 'PredictedGeneration': 'sum'}).reset_index()
+    numeric_columns = result_df[["LCLid",column, "PredictedGeneration", "time"]]
     freq_mapping = {'hourly': 'H', 'daily': 'D', 'weekly': 'W'}
     numeric_columns['time'] = pd.to_datetime(numeric_columns['time'])
     
@@ -75,7 +75,7 @@ def prediction():
         def calculate_week_number(date):
             return (date.day - 1) // 7 + 1
         grouped_df = numeric_columns.groupby([pd.Grouper(key='LCLid'), pd.Grouper(key='time', freq='W-MON')]).sum().reset_index()
-        grouped_df = grouped_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'predictedload': 'sum'}).reset_index()
+        grouped_df = grouped_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'PredictedGeneration': 'sum'}).reset_index()
         grouped_df['week'] = grouped_df['time'].apply(calculate_week_number)
         grouped_df['month_year'] = grouped_df['time'].dt.strftime('%b-%Y')
         # Group by "LCLid", "week", and "month_year", calculating the mean
@@ -86,19 +86,19 @@ def prediction():
         grouped_df['month_year'] = grouped_df['month_year'].dt.strftime('%b-%Y')
         grouped_df['time'] = grouped_df['month_year'].astype(str)+"- Week "+grouped_df['week'].astype(str)
 
-        json_data = grouped_df[['time', 'energy(kWh/hh)', 'predictedload']].values
+        json_data = grouped_df[['time', 'energy(kWh/hh)', 'PredictedGeneration']].values
 
     elif frequency == 'daily':
         grouped_df = numeric_columns.groupby([pd.Grouper(key='LCLid'), pd.Grouper(key='time', freq='D')]).sum().reset_index()
-        grouped_df = grouped_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'predictedload': 'sum'}).reset_index()
-        json_data = grouped_df[['time', 'energy(kWh/hh)', 'predictedload']].values
+        grouped_df = grouped_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'PredictedGeneration': 'sum'}).reset_index()
+        json_data = grouped_df[['time', 'energy(kWh/hh)', 'PredictedGeneration']].values
 
     elif frequency == 'hourly':
         test = result_df.sort_values(['time'])
         test = result_df.groupby([pd.Grouper(key='LCLid'), pd.Grouper(key='time', freq='H')]).sum().reset_index()
-        test = result_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'predictedload': 'sum'}).reset_index()
+        test = result_df.groupby(['time']).agg({'energy(kWh/hh)': 'sum', 'PredictedGeneration': 'sum'}).reset_index()
         #group it by timestamp
-        json_data = test[['time', 'energy(kWh/hh)', 'predictedload']].values
+        json_data = test[['time', 'energy(kWh/hh)', 'PredictedGeneration']].values
 
 
     return jsonify(json_data.tolist()), 200
