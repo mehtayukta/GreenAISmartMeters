@@ -7,7 +7,7 @@ class UserAuth {
         static loginUser = async (data) => {
                 try {
                         console.log("In auth.js")
-                        console.log(data)
+                        //console.log(data)
                         const query = {
                                 email: data.email,
                         };
@@ -26,7 +26,7 @@ class UserAuth {
                         return null;
                 } catch (err) {
                         console.log(err);
-                        console.log("Some unexpected error occurred while logging in");
+                        //console.log("Some unexpected error occurred while logging in");
                 }
         }
         static getUsers = async () => {
