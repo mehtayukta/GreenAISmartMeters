@@ -143,7 +143,7 @@ setShowGraphs(true);
 
 
 const formatChartDataPred = (rawData) => {
-  const formattedDataPred = [['Time', 'Energy', 'Predicted Load']];
+  const formattedDataPred = [['Time', 'Acutal', 'Predicted']];
 
   rawData.forEach(item => {
     const time = item[0];
@@ -349,9 +349,10 @@ return (
         data={chartDataPred}
         options={{
           chart: {
-            title: 'Electricity Load',
-            subtitle: 'Load Averages for different devices and times',
+            title: 'Electric Meter Generation Prediction',
+            subtitle: 'Electric Meter Actual V/S Predicted',
           },
+          colors: ['orange', 'green'], // Adjusted colors
         }}
       />
 

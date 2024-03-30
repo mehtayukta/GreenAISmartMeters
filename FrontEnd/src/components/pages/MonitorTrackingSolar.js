@@ -141,7 +141,7 @@ export const MonitorTrackSolar = () => {
   }
     
     const formatChartDataPred = (rawData) => {
-    const formattedDataPred = [['Time', 'Energy', 'Predicted Solar']];
+    const formattedDataPred = [['Time', 'Actual', 'Predicted']];
     
     rawData.forEach(item => {
     const time = item[0];
@@ -344,8 +344,9 @@ return (
         options={{
           chart: {
             title: 'Solar Generation Prediction',
-            subtitle: 'Solar Aggregation for different devices and times',
+            subtitle: 'Solar Actual V/S Predicted',
           },
+          colors: ['orange', 'green'], // Adjusted colors
         }}
       />
 
