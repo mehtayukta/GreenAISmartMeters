@@ -11,7 +11,7 @@ const meterctrl = require('./controllers/meterctrl');
 const simulatedlightctrl = require('./controllers/simulatedlightctrl');
 const simulatedmeterctrl = require('./controllers/simulatedmeterctrl');
 const simulatedfanctrl = require('./controllers/simulatedfanctrl');
-
+const solarctrl = require('./controllers/solarctrl');
 
 //const testredis = require("./controllers/redis")
 
@@ -57,6 +57,7 @@ app.use('/api/meter', meterctrl);
 app.use('/api/simulatedlight', simulatedlightctrl);
 app.use('/api/simulatedmeter', simulatedmeterctrl);
 app.use('/api/simulatedfan', simulatedfanctrl);
+app.use('/api/solar', solarctrl);
 
 
 app.get("/", (req, res) => {
