@@ -48,11 +48,13 @@ export const Navbar = () => {
                 setIotColor(0);
                 setStorageColor(0);
                 setMeterColor(0);
+                setGlobalVariable_2('solar')
+                navigate(setGlobalVariable, { state: { selectedPage: 'solar' } });
               }}
               style={{ width: '100%',  color: '#757575', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30, marginRight: 20, fontFamily: '-moz-initial', fontWeight: 'bold', borderBottom: solarColor ? '1px solid white' : null, color: solarColor ? '1px solid white' : 'gray' }}
               className={`navbar-link ${solarColor ? "selectedItemStyle" : ""}`}
               >
-              <Link  to="/solar" style = {{ color: '#757575'}} to="/solar">Solar</Link>
+              <Link  to="/solar" style = {{ color: '#757575'}}>Solar</Link>
             </div>
             <div
               onClick={() => {
