@@ -8,12 +8,12 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
   const data = req.body;
-  console.log("In authctrl")
-  console.log(data)
+  //console.log("In authctrl")
+  //console.log(data)
   const response = {};
   try {
     const result = await UserAuth.loginUser(data);
-    console.log(result)
+    //console.log(result)
     if (result) {
       response.success = true;
       response.user = result;
@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
       res.status(400).send(response);
     }
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     response.success = false;
     response.error = 'Some error occurred. Please try again later';
     response.status = '500';

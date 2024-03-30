@@ -120,7 +120,7 @@ router.put('/updateFandetails', async (req, res) => {
 router.patch('/updateCloudStatus', async (req, res) => {
   //const data = req.body;
   let data = req.query;
-  console.log('here.....');
+  //console.log('here.....');
   //let data = req.body;
   const response = {};
   try {

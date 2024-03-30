@@ -9,14 +9,14 @@ const router = express.Router();
 //also write code for get light by id.
 router.get('/getSimulatedMeters', async (req, res) => {
   let id = req.query.user_id;
-  console.log("simulatedmeterctrl 1 ")
+  // console.log("simulatedmeterctrl 1 ")
   const response = {};
   try {
     let result = await SimulatedMeterServices.getSimulatedMeters(id);
-    console.log("simulatedmeterctrl 2 ")
+    // console.log("simulatedmeterctrl 2 ")
 
     if (result) {
-      console.log("simulatedmeterctrl 3")
+      // console.log("simulatedmeterctrl 3")
       response.success = true;
       response.user = result;
       response.status = '200';
@@ -28,7 +28,7 @@ router.get('/getSimulatedMeters', async (req, res) => {
       res.status(400).send(response);
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     response.success = false;
     response.error = 'Some error occurred. Please try again later';
     response.status = '500';
@@ -64,13 +64,13 @@ router.get('/getSimulatedMeter', async (req, res) => {
 
 router.post('/addSimulatedMeter', async (req, res) => {
   //const data = req.body;
-  console.log('here.....');
+  // console.log('here.....');
   let data = req.body;
   const response = {};
   try {
-    console.log(data);
+    // console.log(data);
     let result = await SimulatedMeterServices.addSimulatedMeter(data);
-    console.log("result:" + result);
+    // console.log("result:" + result);
     if (result) {
       response.success = true;
       response.user = result;
