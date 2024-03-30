@@ -15,6 +15,7 @@ const Header = props => {
       <Nav activeKey={location.pathname}>
         <Nav.Link href="/iot">IoT</Nav.Link> 
         <Nav.Link href="/meter">Meter</Nav.Link>
+        <Nav.Link href="/solar">Solar</Nav.Link>
       </Nav>
     </Navbar>
   );

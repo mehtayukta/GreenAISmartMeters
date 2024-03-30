@@ -2,6 +2,7 @@ import React from 'react';
 import '../../styles/Buttons.css';
 import { MonitorMeter } from './MonitorMeter';
 import { MonitorIOT } from './MonitorIOT';
+import {MonitorSolar} from './MonitorSolar';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect,useContext } from 'react';
 import { GlobalContext } from './GlobalContext';
@@ -45,6 +46,7 @@ export const MonitorTrackingOptions = () => {
       </div> */}
       {meter === 'meter' && <MonitorMeter />}
       {meter === 'iot' && <MonitorIOT />}
+      {meter === 'solar' && <MonitorSolar/>}
     </div>
   );
 };

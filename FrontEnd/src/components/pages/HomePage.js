@@ -16,13 +16,33 @@ export default function HomePage() {
   const [nonWorkingCount, setNonWorkingCount] = useState(0);
   const [meterData, setMeterData] = useState([]);
   const [solarData, setSolarData] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
+  const loaderStyle = {
+    alignSelf: 'center',
+    marginTop: '2%',
+    marginLeft: '20%',
+    border: '16px solid #f3f3f3',
+    borderRadius: '25%',
+    borderTop: '16px solid #566caf',
+    borderRight: '16px solid #197e81',
+    borderBottom: '16px solid red',
+    width: '100px',
+    height: '100px',
+    animation: 'spin 2s linear infinite',
+  }
+
+
   const chartData = [['Date', ...new Set(meterData.map(item => item.LCLid))]];
+  const chartDataSolar = [['Date', ...new Set(solarData.map(item => item.LCLid))]];
+
   const [maxMeterEnergy, setMaxMeterEnergy] = useState(0);
 const [maxSolarEnergy, setMaxSolarEnergy] = useState(0);
 const romaniaCoordinates = [45.9432, 24.9668]; // Coordinates for Romania
-const workingMeterCount = 100; // Example working meter count
-  const solarMeterCount = 50; // Example solar meter count
+// const workingMeterCount = 100; // Example working meter count
+//   const solarMeterCount = 50; // Example solar meter count
   const [mapLoaded, setMapLoaded] = useState(false); // State variable to track map loading
+  
+  console.log('showLoader:', showLoader);
 
   useEffect(() => {
     setMapLoaded(true);
@@ -41,6 +61,23 @@ const workingMeterCount = 100; // Example working meter count
       row.push(energyByLCLid[LCLid] || null);
     });
     chartData.push(row);
+  });
+  
+
+  // Solar
+  const groupedDataSolar = solarData.reduce((acc, item) => {
+    acc[item.tstp] = acc[item.tstp] || {};
+    acc[item.tstp][item.LCLid] = item.energy;
+    return acc;
+  }, {});
+  
+// Populate chartDataSolar
+Object.entries(groupedDataSolar).forEach(([tstp, energyByLCLid]) => {
+    const row = [tstp];
+    chartDataSolar[0].slice(1).forEach(LCLid => {
+      row.push(energyByLCLid[LCLid] || null);
+    });
+    chartDataSolar.push(row);
   });
   
 
@@ -112,15 +149,52 @@ const workingMeterCount = 100; // Example working meter count
   });
 
 
+// const last30_daysdata_meter = async () => {
+//     try {
+//         const response = await axios.post("api/last30daysdata");
+
+//         if (!response.data) {
+//             throw new Error('Failed to fetch data');
+//         }
+//         const data = response.data;
+//         console.log(data);
+
+//         // Separate meter and solar data
+//         const meter = data.filter(item => item.device === 'Meter');
+//         const solar = data.filter(item => item.device === 'Solar');
+
+//         // Find maximum energy value for meter data
+//         const maxMeterEnergy = meter.reduce((max, item) => Math.max(max, parseFloat(item.energy)), -Infinity);
+//         const maxMeterEnergy1 = parseFloat(maxMeterEnergy.toFixed(2));
+
+//         // Find maximum energy value for solar data
+//         const maxSolarEnergy = meter.reduce((max, item) => Math.max(max, parseFloat(item.energy)), -Infinity);
+//         const maxSolarEnergy1 = parseFloat(maxSolarEnergy.toFixed(2));
+
+//         console.log('Maximum energy value for Meter data:', maxMeterEnergy);
+
+//         setMeterData(meter);
+//         setMaxMeterEnergy(maxMeterEnergy1);
+//         setSolarData(solar);
+//         setMaxSolarEnergy(maxSolarEnergy1);
+
+        
+
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//     }
+// };
+
 const last30_daysdata_meter = async () => {
     try {
+        setShowLoader(true);
         const response = await axios.post("api/last30daysdata");
-
+          
         if (!response.data) {
             throw new Error('Failed to fetch data');
         }
         const data = response.data;
-        console.log(data);
+        //console.log(data);
 
         // Separate meter and solar data
         const meter = data.filter(item => item.device === 'Meter');
@@ -130,16 +204,24 @@ const last30_daysdata_meter = async () => {
         const maxMeterEnergy = meter.reduce((max, item) => Math.max(max, parseFloat(item.energy)), -Infinity);
         const maxMeterEnergy1 = parseFloat(maxMeterEnergy.toFixed(2));
 
-        console.log('Maximum energy value for Meter data:', maxMeterEnergy);
+        // Find maximum energy value for solar data
+        const maxSolarEnergy = solar.reduce((max, item) => Math.max(max, parseFloat(item.energy)), -Infinity); // Change 'meter' to 'solar'
+        const maxSolarEnergy1 = parseFloat(maxSolarEnergy.toFixed(2));
+
+        //console.log('Maximum energy value for Meter data:', maxMeterEnergy);
+        //console.log('Maximum energy value for Meter data:', maxSolarEnergy);
+
 
         setMeterData(meter);
         setMaxMeterEnergy(maxMeterEnergy1);
-        // setSolarData(solar);
+        setSolarData(solar);
+        setMaxSolarEnergy(maxSolarEnergy1);
+        setShowLoader(false);
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 };
-
 
 //
 
@@ -227,46 +309,54 @@ const last30_daysdata_meter = async () => {
           </tr>
           <tr style={{ backgroundColor: '#ffffff' }}>
             <td style={{ padding: '10px' }}>Solar:</td>
-            <td style={{ padding: '10px' }}>{maxMeterEnergy}kW</td>
+            <td style={{ padding: '10px' }}>{maxSolarEnergy}kW</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <div style={{ flex: 1, marginTop: '60px', width: '800px', height: '260px' }}>
-  {/* Meter Graph */}
-  <Chart
-    chartType="LineChart"
-    loader={<div>Loading Chart...</div>}
-    data={chartData}
-    options={{
-      title: 'Load Consumption for Last 30 days',
-      hAxis: { title: 'Date', slantedText: true }, // Set slantedText to true to display the dates at an angle
-      vAxis: { title: 'Load' },
-      chartArea: { width: '70%', height: '45%' } // Adjust the chart area to leave space for axis labels
-    }}
-    // Set chart width and height directly
-    width={'800px'}
-    height={'255px'}
-  />
-<br></br>
-<Chart
-    chartType="LineChart"
-    loader={<div>Loading Chart...</div>}
-    data={chartData}
-    options={{
-      title: 'Solar Consumption for Last 30 days',
-      hAxis: { title: 'Date', slantedText: true }, // Set slantedText to true to display the dates at an angle
-      vAxis: { title: 'Load' },
-      chartArea: { width: '70%', height: '45%' } // Adjust the chart area to leave space for axis labels
-    }}
-    // Set chart width and height directly
-    width={'800px'}
-    height={'260px'}
-  />
+  {showLoader ? (
+  <div id="loader" style={loaderStyle}></div>
+  ) : (
+  <>
+    {chartData.length > 1 && chartDataSolar.length > 1 && (
+      <div style={{ flex: 1, marginTop: '60px', width: '800px', height: '260px' }}>
+        {/* Meter Graph */}
+        <Chart
+          chartType="LineChart"
+          loader={<div>Loading Chart...</div>}
+          data={chartData}
+          options={{
+            title: 'Load Consumption for Last 30 days',
+            hAxis: { title: 'Date', slantedText: true },
+            vAxis: { title: 'Load' },
+            chartArea: { width: '70%', height: '45%' }
+          }}
+          width={'800px'}
+          height={'255px'}
+        />
+        <br></br>
+        <Chart
+          chartType="LineChart"
+          loader={<div>Loading Chart...</div>}
+          data={chartDataSolar}
+          options={{
+            title: 'Solar Consumption for Last 30 days',
+            hAxis: { title: 'Date', slantedText: true },
+            vAxis: { title: 'Load' },
+            chartArea: { width: '70%', height: '45%' }
+          }}
+          width={'800px'}
+          height={'260px'}
+        />
+      </div>
+    )}
+  </>
+)}
 </div>
-</div>
+
+
 
 {/*  Map */}
 <div style={{ width: '1000px', marginTop: '30px', marginLeft: '2%' }}>
@@ -274,20 +364,23 @@ const last30_daysdata_meter = async () => {
     color: '#757575',marginLeft :'10%', width: '100%'}}>
     <h3>Meter Details Map</h3>
     <div style={{ width: '100%', height: '400px' }}>
+
       <MapContainer center={romaniaCoordinates} zoom={6} style={{ height: "100%", width: '100%' }}>
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={romaniaCoordinates} icon={customMarkerIcon}>
-          <Popup>
-            <div style={{ width: '100px', height: '100px'}}>
-              <h4>Romania</h4>
-              <h6>Working Electric Meters: {workingCount}</h6>
-              <h6>Working Solar Meters: {workingCount}</h6>
-            </div>
-          </Popup>
-        </Marker>
-      </MapContainer>
+  <TileLayer
+    url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    lang="en" // Specify the language as English
+  />
+  <Marker position={romaniaCoordinates} icon={customMarkerIcon}>
+    <Popup>
+      <div style={{ width: '100px', height: '100px'}}>
+        <h4>Romania</h4>
+        <h6>Working Electric Meters: {workingCount}</h6>
+        <h6>Working Solar Meters: {workingCount}</h6>
+      </div>
+    </Popup>
+  </Marker>
+</MapContainer>
     </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ import '../../styles/deviceMgmt.css';
 import '../../styles/Buttons.css';
 
 
-export const MonitorTrackingElectric = () => {
+export const MonitorTrackSolar = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
@@ -57,131 +57,125 @@ export const MonitorTrackingElectric = () => {
     };
 
 
- ///////////////////////////////////////////////////////////////////   
- const callPythonFunction = async (e) => {
-  e.preventDefault();
-  setShowLoader(true);
-  console.log("python function called");
-  // #this is for comparison graph 
-  if (!startDate || !endDate || !selectedOption || selectedDevices.length === 0) {
-    alert('Please select all fields before submitting.');
-    //alert(selectedOption);
+  const callPythonFunction = async (e) => {
+      e.preventDefault();
+      setShowLoader(true);
+      console.log("python function called");
+      // #this is for comparison graph 
+      if (!startDate || !endDate || !selectedOption || selectedDevices.length === 0) {
+        alert('Please select all fields before submitting.');
+        //alert(selectedOption);
+      }
+      else{
+        if (showGraphs) {
+          setShowGraphs(false); // If showGraphs is true, set it to false
+        }
+     
+        console.log(selectedOption);
+        console.log("in else");
+      try {
+        const response = await axios.post("api/comparegraphssolar", {
+          startDate: startDate,
+          endDate: endDate,
+          frequency: selectedOption,
+          selectedDevices: selectedDevices.map((device) => device.value),
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const formattedData = formatChartData(response.data);
+        const jsonData = response.data;
+    
+        if (selectedOption ==="daily" || selectedOption === "weekly" || selectedOption === "hourly" )
+        {
+        setgraphType("Line");
+        }
+        else{
+          setgraphType("Bar");
+        }
+       
+        // Set the state with the formatted data
+        setGraphData(jsonData);
+    
+    
+      // Set the formatted data to the state
+      console.log(response.data)
+      setChartData(formattedData);
+      callPythonFunctionaverage();
+    
+    
+    
+    
+      } catch (error) {
+        console.error("Error calling predictionsolar:", error);
+      }
+    }
   }
-  else{
-    if (showGraphs) {
-      setShowGraphs(false); // If showGraphs is true, set it to false
+    
+  const callPythonFunctionaverage = async () => {
+    console.log("python function called");
+    
+    try {
+      const response = await axios.post("api/predictionsolar", {
+        startDate: startDate,
+        endDate: endDate,
+        frequency: selectedOption,
+        selectedDevices: selectedDevices.map((device) => device.value),
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const formattedDataPred = formatChartDataPred(response.data);
+      const jsonDataPred = response.data;
+    
+      setGraphDataPred(jsonDataPred);
+      setChartDataPred(formattedDataPred);
+    
+    } catch (error) {
+      console.error("Error calling prediction:", error);
     }
- 
-    console.log(selectedOption);
-    console.log("in else");
-  try {
-    const response = await axios.post("api/comparegraphs", {
-      startDate: startDate,
-      endDate: endDate,
-      frequency: selectedOption,
-      selectedDevices: selectedDevices.map((device) => device.value),
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const formattedData = formatChartData(response.data);
-    const jsonData = response.data;
-
-    if (selectedOption ==="daily" || selectedOption === "weekly" || selectedOption === "hourly" )
-    {
-    setgraphType("Line");
-    }
-    else{
-      setgraphType("Bar");
-    }
-   
-    // Set the state with the formatted data
-    setGraphData(jsonData);
-
-
-  // Set the formatted data to the state
-  console.log(response.data)
-  setChartData(formattedData);
-  callPythonFunctionaverage();
-
-
-
-
-  } catch (error) {
-    console.error("Error calling prediction:", error);
+    setShowLoader(false);
+    setShowGraphs(true);
   }
-}
-}
-
-const callPythonFunctionaverage = async () => {
-console.log("python function called");
-
-try {
-  const response = await axios.post("api/prediction", {
-    startDate: startDate,
-    endDate: endDate,
-    frequency: selectedOption,
-    selectedDevices: selectedDevices.map((device) => device.value),
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const formattedDataPred = formatChartDataPred(response.data);
-  const jsonDataPred = response.data;
-
-  setGraphDataPred(jsonDataPred);
-  setChartDataPred(formattedDataPred);
-
-} catch (error) {
-  console.error("Error calling prediction:", error);
-}
-setShowLoader(false);
-setShowGraphs(true);
-}
-
-
-const formatChartDataPred = (rawData) => {
-  const formattedDataPred = [['Time', 'Energy', 'Predicted Load']];
-
-  rawData.forEach(item => {
+    
+    const formatChartDataPred = (rawData) => {
+    const formattedDataPred = [['Time', 'Energy', 'Predicted Solar']];
+    
+    rawData.forEach(item => {
     const time = item[0];
     const energy = parseFloat(item[1]) || 0;
-    let predictedLoad = parseFloat(item[2]) || 0;
-
-    // Replace 0 predicted load values with null
-    if (predictedLoad === 0) {
-      predictedLoad = null;
-    }
-
+    const predictedLoad = parseFloat(item[2]) || 0;
+    
     formattedDataPred.push([time, energy, predictedLoad]);
   });
-
-  return formattedDataPred;
+    
+    return formattedDataPred;
+};
+    
+    
+  const formatChartData = (rawData) => {
+    const formattedData = [['Time', ...new Set(rawData.map(item => item[0]))]];
+    
+    const timeSet = new Set(rawData.map(item => item[1])); // Unique time values
+    
+    timeSet.forEach((time) => {
+    const row = [time];
+    const dataForTime = rawData.filter(item => item[1] === time);
+    
+    const deviceLoadMap = new Map(dataForTime.map(item => [item[0], parseFloat(item[2])]));
+    
+    // Populate the row with load values for each device
+    formattedData[0].slice(1).forEach((device) => {
+      row.push(deviceLoadMap.get(device) || 0);
+    });
+    
+    formattedData.push(row);
+  });
+    return formattedData;
 };
 
-const formatChartData = (rawData) => {
-const formattedData = [['Time', ...new Set(rawData.map(item => item[0]))]];
-
-const timeSet = new Set(rawData.map(item => item[1])); // Unique time values
-
-timeSet.forEach((time) => {
-const row = [time];
-const dataForTime = rawData.filter(item => item[1] === time);
-
-const deviceLoadMap = new Map(dataForTime.map(item => [item[0], parseFloat(item[2])]));
-
-// Populate the row with load values for each device
-formattedData[0].slice(1).forEach((device) => {
-  row.push(deviceLoadMap.get(device) || 0);
-});
-
-formattedData.push(row);
-});
-return formattedData;
-};
-///////////////////////////////////////////////////////////////////////
 
 
  
@@ -191,7 +185,7 @@ useEffect(() => {
   const fetchData = async () => {
     try {
       console.log("in fetch data");
-      const response = await axios.get("/api/route");
+      const response = await axios.get("/api/routesolar");
       const { startDate, endDate, meter_list: initialMeterList } = response.data;
 
       console.log("Start Date from Response:", startDate);
@@ -308,19 +302,19 @@ return (
               <thead>
               <tr>
               <th></th>
-                  <th className='light-grey curved-corners'>Maximum Usage ABR-LD-001<p>668.2MWh</p></th>
+                  <th className='light-grey curved-corners'>Maximum Usage <p>7.29KWh</p></th>
                   <th></th>
-                  <th className='light-grey curved-corners'>Maximum Usage C-LD-001<p>385.3MWh</p> </th>       
+                  <th className='light-grey curved-corners'>Max Average Monthly <p> 1.09KWh</p> </th>       
                   <th></th>     
-                  <th className='light-grey curved-corners'>Maximum Usage ICSTM-LD-001<p>298.08MWh</p> </th>
+                  <th className='light-grey curved-corners'>Max Average Weekly <p>1.75KWh</p> </th>
                   <th></th>
                   <th className='light-grey curved-corners'>Max Averag Daily <p> 2.86KWh</p> </th>       
                   <th></th>     
               </tr>
               </thead>
              </Table> 
-        </div> */}
-      
+        </div>
+       */}
       <div className="graph-container">
       {/* <div className="image-container" id = 'container'> {/* Graph 2 *
       </div> */ }
@@ -333,8 +327,8 @@ return (
         data={chartData}
         options={{
           chart: {
-            title: 'Electricity Load',
-            subtitle: 'Load comparison for different devices and times',
+            title: 'Solar Generation',
+            subtitle: 'Solar Generation comparison for different devices and times',
           },
         }}
       />
@@ -349,8 +343,8 @@ return (
         data={chartDataPred}
         options={{
           chart: {
-            title: 'Electricity Load',
-            subtitle: 'Load Averages for different devices and times',
+            title: 'Solar Generation Prediction',
+            subtitle: 'Solar Aggregation for different devices and times',
           },
         }}
       />
@@ -371,5 +365,6 @@ return (
 };
 
     
-    
-
+// ABRSG001 Date = 12/01/2020 07:30
+// 01/01/2019 00:30
+// 
