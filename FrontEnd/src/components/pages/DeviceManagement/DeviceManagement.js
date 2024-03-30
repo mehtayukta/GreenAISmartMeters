@@ -6,6 +6,7 @@ import { IotButtonOptions } from './IotDeviceManagement'
 //import { useSelector } from 'react-redux';
 //import { usePageContext } from '../../PageContext';
 import { GlobalContext } from '../GlobalContext';
+import { SolarButtonOption } from './SolarButton'
 
 
 export const DeviceManagement = () => {
@@ -30,17 +31,21 @@ export const DeviceManagement = () => {
   return (
 
     <div className="table-wrapper">
-      <br></br>
-      {/* <div style={{ display: 'flex', justifyContent: "center" }}>
-        <button className='light-grey curved-corners selection-button' onClick={(e) => setMeter('iot')} >
-          IOT
-        </button>
-        <button className='light-grey curved-corners selection-button' onClick={(e) => setMeter('meter')}>
-          Meter
-        </button>
-      </div> */}
+    {/* //   <br></br>
+    //   <div style={{ display: 'flex', justifyContent: "center" }}>
+    //     <button className='light-grey curved-corners selection-button' onClick={(e) => setMeter('iot')} >
+    //       IOT
+    //     </button>
+    //     <button className='light-grey curved-corners selection-button' onClick={(e) => setMeter('meter')}>
+    //       Meter
+    //     </button>
+    //      <button className='light-grey curved-corners selection-button' onClick={(e) => setMeter('solar')}>
+    //       Solar
+    //     </button> 
+     </div>*/}
       {meter === 'meter' && <MeterButtonOptions />}
       {meter === 'iot' && <IotButtonOptions/>}
+      {meter === 'solar' && <SolarButtonOption/>}
 
     </div>
   )
