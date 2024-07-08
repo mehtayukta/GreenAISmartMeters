@@ -16,7 +16,7 @@ The project assumes that nodejs is already installed.
    - Create the api folder in source directory
    - cd Frontend/scr/api
    - python -m venv venv (creating the virtual environment)
-   - for mac : .venv/bin/activate
+   - for mac : .venv/bin/activate OR source venv/bin/activate
    - pip install Flask ( and other required modules like pandas, numpy, etc.)
    - pip install python-dotenv
 
