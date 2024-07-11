@@ -147,7 +147,7 @@ button{
 
 .sidebar-item.selected {
   background-color: #eeeeee;
-  color: white;
+  color: black !important;
 }
 
 

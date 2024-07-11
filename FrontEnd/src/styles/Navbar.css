@@ -165,3 +165,11 @@ h2 {
 .content {
   flex: 1 !important;
 }
+
+.navbar-link a {
+  color: #ffffff !important;
+}
+
+.selectedItemStyle a {
+  color: #000000 !important;
+}
