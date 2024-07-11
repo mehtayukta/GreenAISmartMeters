@@ -52,8 +52,8 @@ export const LandingPage = () => {
   return (
     <div style={{ textAlign: 'center' }}>
       <header style={HeaderStyle}>
-        <h1 className="main-title text-center">Data-driven Green AI Models</h1>
-        <p className="main-para text-center">Login/Register now!</p>
+        <h1 className="main-title text-center">login / register page</h1>
+        <p className="main-para text-center">join us now and don't waste time</p>
         <div className="buttons text-center">
           <Link to="/home">
             <button className="primary-button">log in</button>

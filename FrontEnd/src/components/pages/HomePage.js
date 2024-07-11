@@ -192,6 +192,7 @@ const last30_daysdata_meter = async () => {
           
         if (!response.data) {
             throw new Error('Failed to fetch data');
+            console.log("Error")
         }
         const data = response.data;
         //console.log(data);
