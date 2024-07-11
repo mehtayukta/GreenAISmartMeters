@@ -58,8 +58,6 @@ Date Feb 5 2024
    -  The frequency dropdown box has been added so that the frequency can be selected easily.
    - Graphs are dynamically loaded based on your selection and are loaded in real-time.
 
-    The remaining part is AI integration and some CSS.
-
 Date Feb 7 2024 
    - Completed the Frontend Part of CSS
 
