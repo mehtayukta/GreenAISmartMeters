@@ -57,7 +57,7 @@ class SolarServices {
                 _id: data.id
             };
 
-            const oldMeter = await solarMeter.deleteOne(query); // yukta modified remove with deleteOne
+            const oldMeter = await solarMeter.deleteOne(query);
 
             console.log(oldMeter)
             return { oldMeter };
