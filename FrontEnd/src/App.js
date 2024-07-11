@@ -113,6 +113,7 @@ import { AdminHome } from './components/Admin/AdminHome';
 import { Adminmetrics } from './components/Admin/Adminmetrics.js';
 import UserTable from './components/Admin/UserTable';
 import { MonitorTrackingOptions } from './components/pages/MonitorTrackingOptions';
+import Shortage from './components/pages/Shortage';
 import { SideBar } from './components/Admin/Admin.js';
 
 function App() {
@@ -131,6 +132,7 @@ function App() {
             <Route path="/device-mgmt" element={<DeviceManagement />} />
             <Route path="/control-config" element={<ControlConfiguration />} />
             <Route path="/monitor-tracking-options" element={<MonitorTrackingOptions />} />
+            <Route path="/shortage" element={<Shortage />} />
             <Route path="/iot" element={<IoT />} />
             <Route path="/meter" element={<Meter />} />
             <Route path="/admin" element={<Admin />} />
