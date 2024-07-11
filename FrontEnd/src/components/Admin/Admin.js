@@ -7,6 +7,8 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 import { RiLeafFill } from 'react-icons/ri';
 import { GlobalContext } from '../pages/GlobalContext';
+import { GrPowerCycle } from "react-icons/gr";
+
 
 export const SideBar = () => {
   const { globalVariable, setGlobalVariable, globalVariable_2, setGlobalVariable_2 } = useContext(GlobalContext);
@@ -26,37 +28,46 @@ export const SideBar = () => {
       <div>
         <Link
           to="/home"
-          style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }}
+          style={{ fontSize: '20px', color: "white" }}
           className={selectedItem === "/home" ? "sidebar-item selected" : "sidebar-item"}
           onClick={() => handleClick("/home")}
         >
-          <AiFillHome style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }} /> Home
+          <AiFillHome style={{ fontSize: '20px', color: "white" }} /> Home
         </Link>
       </div>
       <br />
       <div>
         <Link
           to="/device-mgmt"
-          style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }}
+          style={{ fontSize: '20px', color: "white" }}
           className={selectedItem === "/device-mgmt" ? "sidebar-item selected" : "sidebar-item"}
           onClick={() => handleClick("/device-mgmt")}
         >
-          <GoGraph style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }} /> Device Management
+          <GoGraph style={{ fontSize: '20px', color: "white" }} /> Device Management
         </Link>
       </div>
       <br />
       <div>
         <Link
           to="/monitor-tracking-options"
-          style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }}
+          style={{ fontSize: '20px', color: "white" }}
           className={selectedItem === "/monitor-tracking-options" ? "sidebar-item selected" : "sidebar-item"}
           onClick={() => handleClick("/monitor-tracking-options")}
         >
-          <GrUserSettings style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }} /> Monitoring-Tracking
+          <GrUserSettings style={{ fontSize: '20px', color: "white" }} /> Monitoring-Tracking
+        </Link>
+      </div> <br />
+      <div>
+        <Link
+          to="/shortage"
+          style={{ fontSize: '20px', color: "white" }}
+          className={selectedItem === "/shortage" ? "sidebar-item selected" : "sidebar-item"}
+          onClick={() => handleClick("/shortage")}>
+          <GrPowerCycle style={{ fontSize: '20px', color: "white" }} /> Shortage Analysis
         </Link>
       </div>
       <div> <br />
-        <Link to="/" style={{ fontSize: '20px', color: "rgb(117, 117, 117)" }}> <FaSignOutAlt style={{ fontSize: 'rgb(117, 117, 117)' }} /> Logout </Link>
+        <Link to="/" style={{ fontSize: '20px', color: "white" }}> <FaSignOutAlt style={{ fontSize: 'white' }} /> Logout </Link>
       </div>
     </div>
   );
@@ -67,4 +78,3 @@ export const Admin = () => {
     <div style={{ display: 'flex' }}></div>
   );
 };
-
