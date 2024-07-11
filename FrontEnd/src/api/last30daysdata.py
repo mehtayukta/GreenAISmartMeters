@@ -15,6 +15,7 @@ def last30daysdata():
         db = client["GreenCloud"]
         collection2 = db["simulated_metersv2"]
         collection = db["electricMeter"]
+        print("valled")
 
         # Define the query to filter simulated_meters collection
         query_simulated_meters = {"workingStatus": 1}

@@ -18,3 +18,8 @@ import fetchingdatasolar
 import predictionsolar
 
 import comparegraphssolar
+
+#### Shortage
+import fetchingshortagedata
+
+import shortage
