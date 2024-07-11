@@ -3,6 +3,8 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 import { GlobalContext } from './pages/GlobalContext';
+import { GrPowerCycle } from "react-icons/gr";
+
 
 
 export const SidebarData = [
@@ -26,6 +28,13 @@ export const SidebarData = [
       icon: <FaIcons.FaCartPlus />,
       cName: "nav-text",
       handleClick: setGlobalVariable => setGlobalVariable("/monitor-tracking-options")
+    },
+    {
+      title: "Shortage",
+      path: "/shortage",
+      icon: <GrPowerCycle />,
+      cName: "nav-text",
+      handleClick: setGlobalVariable => setGlobalVariable("/shortage")
     },
     {
       title: "Control & Configuration",
