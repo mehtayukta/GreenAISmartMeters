@@ -139,7 +139,7 @@ router.get('/getsolarMeterdetails', async (req, res) => {
   const response = {};
   try {
     let result = await SolarServices.getsolarMeterdetails(data);
-    //console.log(data) // Yukta
+    //console.log(data) 
     //console.log("In meterctrl.js getMeterdetails")
 
     if (result) {
